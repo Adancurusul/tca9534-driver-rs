@@ -1,6 +1,3 @@
-#![no_std]
-#![cfg_attr(docsrs, feature(doc_cfg))]
-
 //! TCA9534 I2C IO Expander driver
 //!
 //! This is a platform-independent Rust driver for the TCA9534, an 8-bit I2C
@@ -52,6 +49,8 @@
 //!
 //! let input_level = tca9534.read_pin_input(1).await?;
 //! ```
+#![no_std]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 mod error;
 mod registers;
@@ -61,6 +60,7 @@ mod transport;
 mod tca9534;
 
 // Re-export common types
+
 pub use error::{Tca9534CoreError, Tca9534Error};
 pub use registers::*;
 pub use transport::SyncTransport;
@@ -69,6 +69,7 @@ pub use transport::SyncTransport;
 pub use transport::AsyncTransport;
 
 // Re-export driver implementations from tca9534 module
+
 pub use tca9534::Tca9534Sync;
 
 #[cfg(feature = "async")]

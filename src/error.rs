@@ -1,4 +1,4 @@
-/// Core TCA9534 errors that don't depend on transport
+/// Core TCA9534 errors that don't depend on transport.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Tca9534CoreError {
     /// Invalid pin number (must be 0-7)
@@ -15,7 +15,7 @@ pub enum Tca9534CoreError {
     // InvalidState,
 }
 
-/// TCA9534 driver error type
+/// TCA9534 driver error type.
 #[derive(Debug)]
 pub enum Tca9534Error<I2cE = ()> {
     /// Core TCA9534 error

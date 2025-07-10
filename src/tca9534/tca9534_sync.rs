@@ -2,26 +2,26 @@ use crate::error::*;
 use crate::registers::*;
 use crate::transport::SyncTransport;
 
-/// TCA9534 synchronous driver structure
+/// TCA9534 synchronous driver structure.
 #[derive(Debug)]
 pub struct Tca9534<T> {
     transport: T,
     address: u8,
 }
 
-/// Synchronous implementation
+/// Synchronous implementation.
 impl<T> Tca9534<T>
 where
     T: SyncTransport,
 {
-    /// Create a new TCA9534 driver instance
+    /// Create a new TCA9534 driver instance.
     pub fn new(transport: T, address: u8) -> Result<Self, T::Error> {
         let mut ans = Self { transport, address };
         ans.init()?;
         Ok(ans)
     }
 
-    /// Create a new TCA9534 driver instance with default address
+    /// Create a new TCA9534 driver instance with default address.
     pub fn with_default_address(transport: T) -> Result<Self, T::Error> {
         let mut ans = Self {
             transport,
@@ -31,17 +31,17 @@ where
         Ok(ans)
     }
 
-    /// Set I2C address (useful for multiple devices)
+    /// Set I2C address (useful for multiple devices).
     pub fn set_address(&mut self, address: u8) {
         self.address = address;
     }
 
-    /// Get current I2C address
+    /// Get current I2C address.
     pub fn address(&self) -> u8 {
         self.address
     }
 
-    /// Initialize the device with default settings
+    /// Initialize the device with default settings.
     fn init(&mut self) -> Result<(), T::Error> {
         // Set all pins as inputs (default state)
         self.write_register(Register::Config, 0xFF)?;
@@ -55,7 +55,7 @@ where
         Ok(())
     }
 
-    /// Read a register
+    /// Read a register.
     pub fn read_register(&mut self, reg: Register) -> Result<u8, T::Error> {
         let mut buffer = [0u8; 1];
         self.transport
@@ -63,17 +63,17 @@ where
         Ok(buffer[0])
     }
 
-    /// Write to a register
+    /// Write to a register.
     pub fn write_register(&mut self, reg: Register, value: u8) -> Result<(), T::Error> {
         self.transport.write(self.address, &[reg.addr(), value])
     }
 
-    /// Read all input pins at once
+    /// Read all input pins at once.
     pub fn read_input_port(&mut self) -> Result<u8, T::Error> {
         self.read_register(Register::InputPort)
     }
 
-    /// Read a specific input pin
+    /// Read a specific input pin.
     pub fn read_pin_input(&mut self, pin: u8) -> Result<PinLevel, T::Error>
     where
         T::Error: From<Tca9534CoreError>,
@@ -91,17 +91,17 @@ where
         })
     }
 
-    /// Write all output pins at once
+    /// Write all output pins at once.
     pub fn write_output_port(&mut self, value: u8) -> Result<(), T::Error> {
         self.write_register(Register::OutputPort, value)
     }
 
-    /// Read current output port register value
+    /// Read current output port register value.
     pub fn read_output_port(&mut self) -> Result<u8, T::Error> {
         self.read_register(Register::OutputPort)
     }
 
-    /// Set a specific output pin
+    /// Set a specific output pin.
     pub fn set_pin_output(&mut self, pin: u8, level: PinLevel) -> Result<(), T::Error>
     where
         T::Error: From<Tca9534CoreError>,
@@ -118,7 +118,7 @@ where
         self.write_output_port(current_value)
     }
 
-    /// Toggle a specific output pin
+    /// Toggle a specific output pin.
     pub fn toggle_pin_output(&mut self, pin: u8) -> Result<(), T::Error>
     where
         T::Error: From<Tca9534CoreError>,
@@ -132,7 +132,7 @@ where
         self.write_output_port(current_value)
     }
 
-    /// Configure pin direction (input/output)
+    /// Configure pin direction (input/output).
     pub fn set_pin_config(&mut self, pin: u8, config: PinConfig) -> Result<(), T::Error>
     where
         T::Error: From<Tca9534CoreError>,
@@ -149,17 +149,17 @@ where
         self.write_register(Register::Config, current_config)
     }
 
-    /// Configure all pins direction at once
+    /// Configure all pins direction at once.
     pub fn set_port_config(&mut self, config: u8) -> Result<(), T::Error> {
         self.write_register(Register::Config, config)
     }
 
-    /// Read port configuration
+    /// Read port configuration.
     pub fn read_port_config(&mut self) -> Result<u8, T::Error> {
         self.read_register(Register::Config)
     }
 
-    /// Set pin polarity (normal/inverted)
+    /// Set pin polarity (normal/inverted).
     pub fn set_pin_polarity(&mut self, pin: u8, polarity: PinPolarity) -> Result<(), T::Error>
     where
         T::Error: From<Tca9534CoreError>,
@@ -176,12 +176,12 @@ where
         self.write_register(Register::Polarity, current_polarity)
     }
 
-    /// Configure all pins polarity at once
+    /// Configure all pins polarity at once.
     pub fn set_port_polarity(&mut self, polarity: u8) -> Result<(), T::Error> {
         self.write_register(Register::Polarity, polarity)
     }
 
-    /// Read port polarity configuration
+    /// Read port polarity configuration.
     pub fn read_port_polarity(&mut self) -> Result<u8, T::Error> {
         self.read_register(Register::Polarity)
     }
