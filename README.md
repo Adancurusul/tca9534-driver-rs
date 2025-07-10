@@ -1,8 +1,8 @@
 # TCA9534 Driver
 
-[![Crates.io](https://img.shields.io/crates/v/tca9534.svg)](https://crates.io/crates/tca9534)
-[![Documentation](https://docs.rs/tca9534/badge.svg)](https://docs.rs/tca9534)
-[![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/your-username/tca9534-driver)
+[![Crates.io](https://img.shields.io/crates/v/tca9534-driver-rs.svg)](https://crates.io/crates/tca9534-driver-rs)
+[![Documentation](https://docs.rs/tca9534-driver-rs/badge.svg)](https://docs.rs/tca9534-driver-rs)
+[![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/Adancurusul/tca9534-driver-r'srs)
 
 A platform-independent Rust driver for the **TCA9534** I2C IO expander, with optional [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) integration.
 
