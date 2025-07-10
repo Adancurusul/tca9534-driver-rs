@@ -1,6 +1,6 @@
-use crate::transport::SyncTransport;
-use crate::registers::*;
 use crate::error::*;
+use crate::registers::*;
+use crate::transport::SyncTransport;
 
 /// TCA9534 synchronous driver structure
 #[derive(Debug)]
@@ -23,16 +23,19 @@ where
 
     /// Create a new TCA9534 driver instance with default address
     pub fn with_default_address(transport: T) -> Result<Self, T::Error> {
-        let mut ans = Self { transport, address: addresses::ADDR_000 };
+        let mut ans = Self {
+            transport,
+            address: addresses::ADDR_000,
+        };
         ans.init()?;
         Ok(ans)
     }
-    
+
     /// Set I2C address (useful for multiple devices)
     pub fn set_address(&mut self, address: u8) {
         self.address = address;
     }
-    
+
     /// Get current I2C address
     pub fn address(&self) -> u8 {
         self.address
@@ -42,20 +45,21 @@ where
     fn init(&mut self) -> Result<(), T::Error> {
         // Set all pins as inputs (default state)
         self.write_register(Register::Config, 0xFF)?;
-        
+
         // Set all outputs to low (when configured as outputs)
         self.write_register(Register::OutputPort, 0x00)?;
-        
+
         // Set all polarities to normal (non-inverted)
         self.write_register(Register::Polarity, 0x00)?;
-        
+
         Ok(())
     }
 
     /// Read a register
     pub fn read_register(&mut self, reg: Register) -> Result<u8, T::Error> {
         let mut buffer = [0u8; 1];
-        self.transport.write_read(self.address, &[reg.addr()], &mut buffer)?;
+        self.transport
+            .write_read(self.address, &[reg.addr()], &mut buffer)?;
         Ok(buffer[0])
     }
 
@@ -77,10 +81,14 @@ where
         if pin > 7 {
             return Err(TCA9534CoreError::InvalidPin.into());
         }
-        
+
         let port_value = self.read_input_port()?;
         let pin_value = (port_value >> pin) & 0x01;
-        Ok(if pin_value == 0 { PinLevel::Low } else { PinLevel::High })
+        Ok(if pin_value == 0 {
+            PinLevel::Low
+        } else {
+            PinLevel::High
+        })
     }
 
     /// Write all output pins at once
@@ -177,4 +185,4 @@ where
     pub fn read_port_polarity(&mut self) -> Result<u8, T::Error> {
         self.read_register(Register::Polarity)
     }
-} 
+}

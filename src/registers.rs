@@ -8,15 +8,15 @@ pub enum Register {
     /// Input port register (0x00) - Read only
     /// Reflects the incoming logic levels of the pins, regardless of whether the pin is defined as an input or an output
     InputPort = 0x00,
-    
+
     /// Output port register (0x01) - Read/Write
     /// The Output Port register shows the outgoing logic levels of the pins defined as outputs
     OutputPort = 0x01,
-    
+
     /// Polarity Inversion register (0x02) - Read/Write  
     /// This register allows the user to invert the polarity of the Input Port register data
     Polarity = 0x02,
-    
+
     /// Configuration register (0x03) - Read/Write
     /// The Configuration register configures the directions of the I/O pins
     /// 1 = pin is configured as an input (default)
@@ -131,19 +131,19 @@ pub type PortValue = u8;
 pub mod config {
     /// All pins configured as inputs
     pub const ALL_INPUTS: u8 = 0xFF;
-    
+
     /// All pins configured as outputs
     pub const ALL_OUTPUTS: u8 = 0x00;
-    
+
     /// All pins normal polarity
     pub const ALL_NORMAL_POLARITY: u8 = 0x00;
-    
+
     /// All pins inverted polarity
     pub const ALL_INVERTED_POLARITY: u8 = 0xFF;
-    
+
     /// All outputs low
     pub const ALL_OUTPUTS_LOW: u8 = 0x00;
-    
+
     /// All outputs high
     pub const ALL_OUTPUTS_HIGH: u8 = 0xFF;
 }
@@ -166,4 +166,4 @@ pub mod addresses {
     pub const ADDR_110: u8 = 0x26;
     /// A2=1, A1=1, A0=1
     pub const ADDR_111: u8 = 0x27;
-} 
+}

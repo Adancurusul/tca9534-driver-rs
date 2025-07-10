@@ -1,6 +1,6 @@
-use crate::transport::AsyncTransport;
-use crate::registers::*;
 use crate::error::*;
+use crate::registers::*;
+use crate::transport::AsyncTransport;
 
 /// TCA9534 asynchronous driver structure
 #[derive(Debug)]
@@ -23,16 +23,19 @@ where
 
     /// Create a new TCA9534 driver instance with default address
     pub async fn with_default_address(transport: T) -> Result<Self, T::Error> {
-        let mut ans = Self { transport, address: addresses::ADDR_000 };
+        let mut ans = Self {
+            transport,
+            address: addresses::ADDR_000,
+        };
         ans.init().await?;
         Ok(ans)
     }
-    
+
     /// Set I2C address (useful for multiple devices)
     pub fn set_address(&mut self, address: u8) {
         self.address = address;
     }
-    
+
     /// Get current I2C address
     pub fn address(&self) -> u8 {
         self.address
@@ -42,26 +45,30 @@ where
     async fn init(&mut self) -> Result<(), T::Error> {
         // Set all pins as inputs (default state)
         self.write_register(Register::Config, 0xFF).await?;
-        
+
         // Set all outputs to low (when configured as outputs)
         self.write_register(Register::OutputPort, 0x00).await?;
-        
+
         // Set all polarities to normal (non-inverted)
         self.write_register(Register::Polarity, 0x00).await?;
-        
+
         Ok(())
     }
 
     /// Read a register
     pub async fn read_register(&mut self, reg: Register) -> Result<u8, T::Error> {
         let mut buffer = [0u8; 1];
-        self.transport.write_read(self.address, &[reg.addr()], &mut buffer).await?;
+        self.transport
+            .write_read(self.address, &[reg.addr()], &mut buffer)
+            .await?;
         Ok(buffer[0])
     }
 
     /// Write to a register
     pub async fn write_register(&mut self, reg: Register, value: u8) -> Result<(), T::Error> {
-        self.transport.write(self.address, &[reg.addr(), value]).await
+        self.transport
+            .write(self.address, &[reg.addr(), value])
+            .await
     }
 
     /// Read all input pins at once
@@ -77,10 +84,14 @@ where
         if pin > 7 {
             return Err(TCA9534CoreError::InvalidPin.into());
         }
-        
+
         let port_value = self.read_input_port().await?;
         let pin_value = (port_value >> pin) & 0x01;
-        Ok(if pin_value == 0 { PinLevel::Low } else { PinLevel::High })
+        Ok(if pin_value == 0 {
+            PinLevel::Low
+        } else {
+            PinLevel::High
+        })
     }
 
     /// Write all output pins at once
@@ -165,7 +176,8 @@ where
             PinPolarity::Normal => current_polarity &= !(1 << pin),
             PinPolarity::Inverted => current_polarity |= 1 << pin,
         }
-        self.write_register(Register::Polarity, current_polarity).await
+        self.write_register(Register::Polarity, current_polarity)
+            .await
     }
 
     /// Configure all pins polarity at once
@@ -177,4 +189,4 @@ where
     pub async fn read_port_polarity(&mut self) -> Result<u8, T::Error> {
         self.read_register(Register::Polarity).await
     }
-} 
+}

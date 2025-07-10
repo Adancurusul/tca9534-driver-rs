@@ -30,7 +30,6 @@ impl<I2cE> From<TCA9534CoreError> for TCA9534Error<I2cE> {
     }
 }
 
-
 #[cfg(feature = "defmt")]
 impl defmt::Format for TCA9534CoreError {
     fn format(&self, fmt: defmt::Formatter) {
