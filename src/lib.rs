@@ -3,7 +3,7 @@
 
 //! TCA9534 I2C IO Expander driver
 //!
-//! This is a platform-independent Rust driver for the TCA9534, an 8-bit I2C 
+//! This is a platform-independent Rust driver for the TCA9534, an 8-bit I2C
 //! IO expander, with optional [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) integration.
 //!
 //! Both synchronous and asynchronous versions are provided, selectable via feature flags.
@@ -59,16 +59,16 @@
 //! let input_level = tca9534.read_pin_input(1).await?;
 //! ```
 
-mod registers;
 mod error;
+mod registers;
 mod transport;
 
 // TCA9534 driver implementations
 mod tca9534;
 
 // Re-export common types
+pub use error::{TCA9534CoreError, TCA9534Error};
 pub use registers::*;
-pub use error::{TCA9534Error, TCA9534CoreError};
 pub use transport::SyncTransport;
 
 #[cfg(feature = "async")]

@@ -5,7 +5,7 @@ mod tca9534_sync;
 #[cfg(feature = "async")]
 mod tca9534_async;
 
-// Re-export driver implementations  
+// Re-export driver implementations
 pub use tca9534_sync::TCA9534 as TCA9534Sync;
 
 #[cfg(feature = "async")]

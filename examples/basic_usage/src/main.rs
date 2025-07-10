@@ -32,8 +32,7 @@ async fn main(_spawner: Spawner) -> ! {
         i2c_config,
     );
 
-    let mut tca9534 = TCA9534::new(i2c,addresses::ADDR_000);
-    tca9534.init().await.unwrap();
+    let mut tca9534 = TCA9534::new(i2c,addresses::ADDR_000).await.unwrap();
     for pin in 1..4 {
         tca9534.set_pin_config(pin, PinConfig::Output).await.unwrap();
     }

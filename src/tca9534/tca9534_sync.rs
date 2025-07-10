@@ -9,21 +9,23 @@ pub struct TCA9534<T> {
     address: u8,
 }
 
-impl<T> TCA9534<T> {
-    /// Create a new TCA9534 driver instance
-    pub fn new(transport: T, address: u8) -> Self {
-        Self { transport, address }
-    }
-}
-
 /// Synchronous implementation
 impl<T> TCA9534<T>
 where
     T: SyncTransport,
 {
+    /// Create a new TCA9534 driver instance
+    pub fn new(transport: T, address: u8) -> Result<Self, T::Error> {
+        let mut ans = Self { transport, address };
+        ans.init()?;
+        Ok(ans)
+    }
+
     /// Create a new TCA9534 driver instance with default address
-    pub fn new_with_default_address(transport: T) -> Self {
-        Self::new(transport, addresses::ADDR_000)
+    pub fn with_default_address(transport: T) -> Result<Self, T::Error> {
+        let mut ans = Self { transport, address: addresses::ADDR_000 };
+        ans.init()?;
+        Ok(ans)
     }
     
     /// Set I2C address (useful for multiple devices)
@@ -37,7 +39,7 @@ where
     }
 
     /// Initialize the device with default settings
-    pub fn init(&mut self) -> Result<(), T::Error> {
+    fn init(&mut self) -> Result<(), T::Error> {
         // Set all pins as inputs (default state)
         self.write_register(Register::Config, 0xFF)?;
         
