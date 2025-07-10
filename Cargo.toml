@@ -1,0 +1,27 @@
+[package]
+name = "tca9534-driver-rs"
+version = "0.1.0"
+edition = "2021"
+authors = ["adancurusul <1016867898@example.com>"]
+description = "A platform-independent driver for the TCA9534 I2C IO expander"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/Adancurusul/tca9534-driver-rs"
+keywords = ["embedded", "i2c", "io-expander", "tca9534", "no-std"]
+categories = ["embedded", "hardware-support"]
+
+[dependencies]
+embedded-hal = { version = "^1.0", default-features = false, optional = true }
+embedded-hal-async = { version = "^1.0", default-features = false, optional = true }
+defmt = { version = "^0.3", optional = true }
+
+[features]
+default = ["full-async"]
+
+embedded-hal = ["dep:embedded-hal"]
+embedded-hal-async = ["dep:embedded-hal-async"]
+
+async = []
+
+full-async = ["async", "embedded-hal-async", "embedded-hal"]
+
+defmt = ["dep:defmt"]
