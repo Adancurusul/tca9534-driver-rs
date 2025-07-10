@@ -4,13 +4,13 @@ use crate::transport::AsyncTransport;
 
 /// TCA9534 asynchronous driver structure
 #[derive(Debug)]
-pub struct TCA9534<T> {
+pub struct Tca9534<T> {
     transport: T,
     address: u8,
 }
 
 /// Asynchronous implementation
-impl<T> TCA9534<T>
+impl<T> Tca9534<T>
 where
     T: AsyncTransport,
 {
@@ -79,10 +79,10 @@ where
     /// Read a specific input pin
     pub async fn read_pin_input(&mut self, pin: u8) -> Result<PinLevel, T::Error>
     where
-        T::Error: From<TCA9534CoreError>,
+        T::Error: From<Tca9534CoreError>,
     {
         if pin > 7 {
-            return Err(TCA9534CoreError::InvalidPin.into());
+            return Err(Tca9534CoreError::InvalidPin.into());
         }
 
         let port_value = self.read_input_port().await?;
@@ -107,10 +107,10 @@ where
     /// Set a specific output pin
     pub async fn set_pin_output(&mut self, pin: u8, level: PinLevel) -> Result<(), T::Error>
     where
-        T::Error: From<TCA9534CoreError>,
+        T::Error: From<Tca9534CoreError>,
     {
         if pin > 7 {
-            return Err(TCA9534CoreError::InvalidPin.into());
+            return Err(Tca9534CoreError::InvalidPin.into());
         }
 
         let mut current_value = self.read_output_port().await?;
@@ -124,10 +124,10 @@ where
     /// Toggle a specific output pin
     pub async fn toggle_pin_output(&mut self, pin: u8) -> Result<(), T::Error>
     where
-        T::Error: From<TCA9534CoreError>,
+        T::Error: From<Tca9534CoreError>,
     {
         if pin > 7 {
-            return Err(TCA9534CoreError::InvalidPin.into());
+            return Err(Tca9534CoreError::InvalidPin.into());
         }
 
         let mut current_value = self.read_output_port().await?;
@@ -138,10 +138,10 @@ where
     /// Configure pin direction (input/output)
     pub async fn set_pin_config(&mut self, pin: u8, config: PinConfig) -> Result<(), T::Error>
     where
-        T::Error: From<TCA9534CoreError>,
+        T::Error: From<Tca9534CoreError>,
     {
         if pin > 7 {
-            return Err(TCA9534CoreError::InvalidPin.into());
+            return Err(Tca9534CoreError::InvalidPin.into());
         }
 
         let mut current_config = self.read_register(Register::Config).await?;
@@ -165,10 +165,10 @@ where
     /// Set pin polarity (normal/inverted)
     pub async fn set_pin_polarity(&mut self, pin: u8, polarity: PinPolarity) -> Result<(), T::Error>
     where
-        T::Error: From<TCA9534CoreError>,
+        T::Error: From<Tca9534CoreError>,
     {
         if pin > 7 {
-            return Err(TCA9534CoreError::InvalidPin.into());
+            return Err(Tca9534CoreError::InvalidPin.into());
         }
 
         let mut current_polarity = self.read_register(Register::Polarity).await?;

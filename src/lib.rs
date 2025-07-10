@@ -13,19 +13,16 @@
 //! ### Synchronous Usage
 //!
 //! ```rust,ignore
-//! use tca9534::{TCA9534Sync, PinConfig, PinLevel, addresses};
+//! use tca9534::{Tca9534Sync, PinConfig, PinLevel, addresses};
 //!
 //! // Initialize I2C bus (platform specific)
 //! let i2c = setup_i2c(); // Your I2C initialization code
 //!
-//! // Create TCA9534 driver with address 0x20
-//! let mut tca9534 = TCA9534Sync::new(i2c, addresses::ADDR_000);
+//! // Create TCA9534 driver with address 0x20 and initialize the device
+//! let mut tca9534 = Tca9534Sync::new(i2c, addresses::ADDR_000)?;
 //!
 //! // Or use default address constructor  
-//! let mut tca9534 = TCA9534Sync::new_with_default_address(i2c);
-//!
-//! // Initialize the device
-//! tca9534.init()?;
+//! let mut tca9534 = Tca9534Sync::with_default_address(i2c)?;
 //!
 //! // Configure pin 0 as output, others as input
 //! tca9534.set_pin_config(0, PinConfig::Output)?;
@@ -41,16 +38,13 @@
 //! ### Asynchronous Usage (with async feature)
 //!
 //! ```rust,ignore
-//! use tca9534::{TCA9534Async, PinConfig, PinLevel, addresses};
+//! use tca9534::{Tca9534Async, PinConfig, PinLevel, addresses};
 //!
 //! // Initialize async I2C bus (platform specific)
 //! let i2c = setup_async_i2c(); // Your async I2C initialization code
 //!
-//! // Create TCA9534 driver with address 0x20
-//! let mut tca9534 = TCA9534Async::new(i2c, addresses::ADDR_000);
-//!
-//! // Initialize the device
-//! tca9534.init().await?;
+//! // Create TCA9534 driver with address 0x20 and initialize the device
+//! let mut tca9534 = Tca9534Async::new(i2c, addresses::ADDR_000).await?;
 //!
 //! // Configure and use pins
 //! tca9534.set_pin_config(0, PinConfig::Output).await?;
@@ -67,7 +61,7 @@ mod transport;
 mod tca9534;
 
 // Re-export common types
-pub use error::{TCA9534CoreError, TCA9534Error};
+pub use error::{Tca9534CoreError, Tca9534Error};
 pub use registers::*;
 pub use transport::SyncTransport;
 
@@ -75,7 +69,7 @@ pub use transport::SyncTransport;
 pub use transport::AsyncTransport;
 
 // Re-export driver implementations from tca9534 module
-pub use tca9534::TCA9534Sync;
+pub use tca9534::Tca9534Sync;
 
 #[cfg(feature = "async")]
-pub use tca9534::TCA9534Async;
+pub use tca9534::Tca9534Async;

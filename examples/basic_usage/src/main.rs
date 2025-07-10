@@ -9,7 +9,7 @@ use embassy_stm32::{
     time::Hertz,
 };
 use embassy_time::{Duration, Timer};
-use tca9534_driver_rs::{addresses, PinConfig, PinLevel, TCA9534Async as TCA9534};
+use tca9534_driver_rs::{addresses, PinConfig, PinLevel, Tca9534Async as Tca9534};
 use {defmt_rtt as _, panic_probe as _};
 
 bind_interrupts!(struct Irqs {
@@ -32,7 +32,7 @@ async fn main(_spawner: Spawner) -> ! {
         i2c_config,
     );
 
-    let mut tca9534 = TCA9534::new(i2c, addresses::ADDR_000).await.unwrap();
+    let mut tca9534 = Tca9534::new(i2c, addresses::ADDR_000).await.unwrap();
     for pin in 1..4 {
         tca9534
             .set_pin_config(pin, PinConfig::Output)

@@ -81,7 +81,7 @@ tca9534 = { version = "0.1", features = ["defmt"] }
 
 #### Available Features
 
-- **`async`** - Enables async/await support for TCA9534Async
+- **`async`** - Enables async/await support for Tca9534Async
 - **`embedded-hal`** - Enables embedded-hal v1.0 I2C trait integration
 - **`embedded-hal-async`** - Enables embedded-hal-async I2C trait integration  
 - **`full-async`** - Combines `async` + `embedded-hal` + `embedded-hal-async` (included in default)
@@ -97,20 +97,20 @@ tca9534 = { version = "0.1", default-features = false, features = ["embedded-hal
 ```
 
 ```rust
-use tca9534::{TCA9534Sync, PinConfig, PinLevel, addresses};
+use tca9534::{Tca9534Sync, PinConfig, PinLevel, addresses};
 
 // Initialize I2C bus (platform specific)
 let i2c = setup_i2c(); // Your I2C initialization code
 
 // Create TCA9534 driver with address 0x20
-let mut tca9534 = TCA9534Sync::new(i2c, addresses::ADDR_000);
+let mut tca9534 = Tca9534Sync::new(i2c, addresses::ADDR_000);
 
 // Or use default address constructor  
-let mut tca9534 = TCA9534Sync::new_with_default_address(i2c);
+let mut tca9534 = Tca9534Sync::new_with_default_address(i2c);
 
 //Or use transport which implements SyncTransport
 let transport = MyI2c::new(your_own_i2c);
-let mut tca9534 = TCA9534Sync::new(transport, addresses::ADDR_000);
+let mut tca9534 = Tca9534Sync::new(transport, addresses::ADDR_000);
 
 // Initialize the device
 tca9534.init()?;
@@ -139,7 +139,7 @@ tca9534 = { version = "0.1", default-features = false }
 ```
 
 ```rust
-use tca9534::{TCA9534Sync, PinConfig, PinLevel, addresses, SyncTransport};
+use tca9534::{Tca9534Sync, PinConfig, PinLevel, addresses, SyncTransport};
 
 // Implement your own transport
 struct MyI2cTransport {
@@ -164,7 +164,7 @@ impl SyncTransport for MyI2cTransport {
 
 // Use with custom transport
 let transport = MyI2cTransport::new();
-let mut tca9534 = TCA9534Sync::new(transport, addresses::ADDR_000);
+let mut tca9534 = Tca9534Sync::new(transport, addresses::ADDR_000);
 ```
 
 ### Async Example
@@ -172,13 +172,13 @@ let mut tca9534 = TCA9534Sync::new(transport, addresses::ADDR_000);
 **Note**: Async support is enabled by default with `full-async` feature.
 
 ```rust
-use tca9534::{TCA9534Async, PinConfig, PinLevel, addresses};
+use tca9534::{Tca9534Async, PinConfig, PinLevel, addresses};
 
 // Initialize async I2C bus (platform specific)
 let i2c = setup_async_i2c(); // Your async I2C initialization code
 
 // Create TCA9534 driver
-let mut tca9534 = TCA9534Async::new(i2c, addresses::ADDR_000);
+let mut tca9534 = Tca9534Async::new(i2c, addresses::ADDR_000);
 
 // Initialize the device
 tca9534.init().await?;

@@ -1,6 +1,6 @@
 /// Core TCA9534 errors that don't depend on transport
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum TCA9534CoreError {
+pub enum Tca9534CoreError {
     /// Invalid pin number (must be 0-7)
     InvalidPin,
     // /// Invalid register address
@@ -17,21 +17,21 @@ pub enum TCA9534CoreError {
 
 /// TCA9534 driver error type
 #[derive(Debug)]
-pub enum TCA9534Error<I2cE = ()> {
+pub enum Tca9534Error<I2cE = ()> {
     /// Core TCA9534 error
-    Core(TCA9534CoreError),
+    Core(Tca9534CoreError),
     /// I2C communication error
     I2c(I2cE),
 }
 
-impl<I2cE> From<TCA9534CoreError> for TCA9534Error<I2cE> {
-    fn from(err: TCA9534CoreError) -> Self {
-        TCA9534Error::Core(err)
+impl<I2cE> From<Tca9534CoreError> for Tca9534Error<I2cE> {
+    fn from(err: Tca9534CoreError) -> Self {
+        Tca9534Error::Core(err)
     }
 }
 
 #[cfg(feature = "defmt")]
-impl defmt::Format for TCA9534CoreError {
+impl defmt::Format for Tca9534CoreError {
     fn format(&self, fmt: defmt::Formatter) {
         match self {
             Self::InvalidPin => defmt::write!(fmt, "InvalidPin"),
@@ -45,7 +45,7 @@ impl defmt::Format for TCA9534CoreError {
 }
 
 #[cfg(feature = "defmt")]
-impl<I2cE> defmt::Format for TCA9534Error<I2cE> {
+impl<I2cE> defmt::Format for Tca9534Error<I2cE> {
     fn format(&self, fmt: defmt::Formatter) {
         match self {
             Self::Core(core_err) => defmt::write!(fmt, "Core({})", core_err),
@@ -54,7 +54,7 @@ impl<I2cE> defmt::Format for TCA9534Error<I2cE> {
     }
 }
 
-impl core::fmt::Display for TCA9534CoreError {
+impl core::fmt::Display for Tca9534CoreError {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::InvalidPin => write!(f, "Invalid pin number (must be 0-7)"),
@@ -67,7 +67,7 @@ impl core::fmt::Display for TCA9534CoreError {
     }
 }
 
-impl<I2cE> core::fmt::Display for TCA9534Error<I2cE>
+impl<I2cE> core::fmt::Display for Tca9534Error<I2cE>
 where
     I2cE: core::fmt::Debug,
 {
