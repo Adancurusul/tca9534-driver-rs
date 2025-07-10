@@ -1,6 +1,6 @@
 use crate::transport::AsyncTransport;
 use crate::registers::*;
-use crate::errors::*;
+use crate::error::*;
 
 /// TCA9534 asynchronous driver structure
 #[derive(Debug)]

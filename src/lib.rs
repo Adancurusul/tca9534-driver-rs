@@ -60,7 +60,7 @@
 //! ```
 
 mod registers;
-mod errors;
+mod error;
 mod transport;
 
 // TCA9534 driver implementations
@@ -68,7 +68,7 @@ mod tca9534;
 
 // Re-export common types
 pub use registers::*;
-pub use errors::{TCA9534Error, TCA9534CoreError};
+pub use error::{TCA9534Error, TCA9534CoreError};
 pub use transport::SyncTransport;
 
 #[cfg(feature = "async")]

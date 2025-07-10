@@ -1,6 +1,6 @@
 use crate::transport::SyncTransport;
 use crate::registers::*;
-use crate::errors::*;
+use crate::error::*;
 
 /// TCA9534 synchronous driver structure
 #[derive(Debug)]
