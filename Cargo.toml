@@ -25,3 +25,8 @@ async = []
 full-async = ["async", "embedded-hal-async", "embedded-hal"]
 
 defmt = ["dep:defmt"]
+
+[workspace]
+members = [
+    "examples/basic_usage",
+]

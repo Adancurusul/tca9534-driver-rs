@@ -1,4 +1,3 @@
-
 /// A synchronous I2C transport.
 pub trait SyncTransport {
     /// The type of error that can be returned by the transport.
@@ -25,14 +24,14 @@ impl<I2C> SyncTransport for I2C
 where
     I2C: embedded_hal::i2c::I2c,
 {
-    type Error = crate::errors::TCA9534Error<I2C::Error>;
+    type Error = crate::error::Tca9534Error<I2C::Error>;
 
     fn write(&mut self, addr: u8, bytes: &[u8]) -> Result<(), Self::Error> {
-        I2C::write(self,addr, bytes).map_err(crate::errors::TCA9534Error::I2c)
+        I2C::write(self, addr, bytes).map_err(crate::error::Tca9534Error::I2c)
     }
 
     fn read(&mut self, addr: u8, bytes: &mut [u8]) -> Result<(), Self::Error> {
-        I2C::read(self,addr, bytes).map_err(crate::errors::TCA9534Error::I2c)
+        I2C::read(self, addr, bytes).map_err(crate::error::Tca9534Error::I2c)
     }
 
     fn write_read(
@@ -41,7 +40,7 @@ where
         wr_bytes: &[u8],
         rd_bytes: &mut [u8],
     ) -> Result<(), Self::Error> {
-        I2C::write_read(self,addr, wr_bytes, rd_bytes).map_err(crate::errors::TCA9534Error::I2c)
+        I2C::write_read(self, addr, wr_bytes, rd_bytes).map_err(crate::error::Tca9534Error::I2c)
     }
 }
 
@@ -72,14 +71,18 @@ impl<I2C> AsyncTransport for I2C
 where
     I2C: embedded_hal_async::i2c::I2c,
 {
-    type Error = crate::errors::TCA9534Error<I2C::Error>;
+    type Error = crate::error::Tca9534Error<I2C::Error>;
 
     async fn write(&mut self, addr: u8, bytes: &[u8]) -> Result<(), Self::Error> {
-        I2C::write(self,addr, bytes).await.map_err(crate::errors::TCA9534Error::I2c)
+        I2C::write(self, addr, bytes)
+            .await
+            .map_err(crate::error::Tca9534Error::I2c)
     }
 
     async fn read(&mut self, addr: u8, bytes: &mut [u8]) -> Result<(), Self::Error> {
-        I2C::read(self,addr, bytes).await.map_err(crate::errors::TCA9534Error::I2c)
+        I2C::read(self, addr, bytes)
+            .await
+            .map_err(crate::error::Tca9534Error::I2c)
     }
 
     async fn write_read(
@@ -88,9 +91,11 @@ where
         wr_bytes: &[u8],
         rd_bytes: &mut [u8],
     ) -> Result<(), Self::Error> {
-        I2C::write_read(self,addr, wr_bytes, rd_bytes).await.map_err(crate::errors::TCA9534Error::I2c)
+        I2C::write_read(self, addr, wr_bytes, rd_bytes)
+            .await
+            .map_err(crate::error::Tca9534Error::I2c)
     }
-} 
+}
 
 // #[cfg(feature = "async")]
 // impl<I2C> AsyncTransport for embedded_hal_async::i2c::I2cDevice
@@ -115,4 +120,4 @@ where
 //     ) -> Result<(), Self::Error> {
 //         self.i2c.write_read(addr, wr_bytes, rd_bytes).await.map_err(TCA9534Error::I2c)
 //     }
-// } 
+// }
