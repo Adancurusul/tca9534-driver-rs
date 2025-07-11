@@ -742,7 +742,7 @@ dependencies = [
 
 [[package]]
 name = "tca9534-driver-rs"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "defmt 0.3.100",
  "embedded-hal 1.0.0",

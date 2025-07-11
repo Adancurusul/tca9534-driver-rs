@@ -9,7 +9,7 @@ use embassy_stm32::{
     time::Hertz,
 };
 use embassy_time::{Duration, Timer};
-use tca9534_driver_rs::{addresses, PinConfig, PinLevel, Tca9534Async as Tca9534};
+use tca9534::{addresses, PinConfig, PinLevel, Tca9534Async as Tca9534};
 use {defmt_rtt as _, panic_probe as _};
 
 bind_interrupts!(struct Irqs {
