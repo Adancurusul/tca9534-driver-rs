@@ -4,10 +4,11 @@
 [![Documentation](https://docs.rs/tca9534-driver-rs/badge.svg)](https://docs.rs/tca9534-driver-rs)
 [![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/Adancurusul/tca9534-driver-r'srs)
 
-A platform-independent Rust driver for the **TCA9534** I2C IO expander, with optional [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) integration.
+A platform-independent Rust driver for the **TCA9534** I2C IO expander, with optional [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) integration and **complete C/C++ API support**.
 
 ## 🚀 Key Features
 
+- 🌍 **C/C++ API Support**: Complete C FFI interface for seamless integration into C/C++ projects
 - 🔧 **Zero Dependencies**: Core driver works without any external dependencies
 - 🎯 **Optional embedded-hal Integration**: Seamless integration when needed
 - 🔄 **Sync & Async Support**: Both synchronous and asynchronous operations
