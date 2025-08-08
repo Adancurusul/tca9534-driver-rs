@@ -49,8 +49,12 @@
 //!
 //! let input_level = tca9534.read_pin_input(1).await?;
 //! ```
+
+
+
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_cfg))]
+
 
 mod error;
 mod registers;
@@ -58,6 +62,10 @@ mod transport;
 
 // TCA9534 driver implementations
 mod tca9534;
+
+// C FFI module (feature-gated)
+#[cfg(feature = "capi")]
+pub mod ffi;
 
 // Re-export common types
 

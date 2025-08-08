@@ -4,10 +4,11 @@
 [![Documentation](https://docs.rs/tca9534-driver-rs/badge.svg)](https://docs.rs/tca9534-driver-rs)
 [![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/Adancurusul/tca9534-driver-r'srs)
 
-A platform-independent Rust driver for the **TCA9534** I2C IO expander, with optional [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) integration.
+A platform-independent Rust driver for the **TCA9534** I2C IO expander, with optional [`embedded-hal`](https://github.com/rust-embedded/embedded-hal) integration and **complete C/C++ API support**.
 
 ## 🚀 Key Features
 
+- 🌍 **C/C++ API Support**: Complete C FFI interface for seamless integration into C/C++ projects
 - 🔧 **Zero Dependencies**: Core driver works without any external dependencies
 - 🎯 **Optional embedded-hal Integration**: Seamless integration when needed
 - 🔄 **Sync & Async Support**: Both synchronous and asynchronous operations
@@ -61,22 +62,22 @@ The TCA9534 is an 8-bit I2C IO expander that provides:
 ```toml
 [dependencies]
 # Default - includes full async support (async + embedded-hal + embedded-hal-async)
-tca9534 = "0.1"
+tca9534 = "0.2"
 
 # Minimal - no external dependencies, sync only
-tca9534 = { version = "0.1", default-features = false }
+tca9534 = { version = "0.2", default-features = false }
 
 # Sync with embedded-hal support only
-tca9534 = { version = "0.1", default-features = false, features = ["embedded-hal"] }
+tca9534 = { version = "0.2", default-features = false, features = ["embedded-hal"] }
 
 # Async only (no embedded-hal)
-tca9534 = { version = "0.1", default-features = false, features = ["async"] }
+tca9534 = { version = "0.2", default-features = false, features = ["async"] }
 
 # Custom combinations
-tca9534 = { version = "0.1", default-features = false, features = ["async", "embedded-hal"] }
+tca9534 = { version = "0.2", default-features = false, features = ["async", "embedded-hal"] }
 
 # With defmt logging support
-tca9534 = { version = "0.1", features = ["defmt"] }
+tca9534 = { version = "0.2", features = ["defmt"] }
 ```
 
 #### Available Features
@@ -93,7 +94,7 @@ tca9534 = { version = "0.1", features = ["defmt"] }
 
 **Note**: For sync-only usage, disable default features in your Cargo.toml:
 ```toml
-tca9534 = { version = "0.1", default-features = false, features = ["embedded-hal"] }
+tca9534 = { version = "0.2", default-features = false, features = ["embedded-hal"] }
 ```
 
 ```rust
@@ -135,7 +136,7 @@ tca9534.toggle_pin_output(0)?;
 
 **Note**: For zero dependencies, use minimal mode:
 ```toml
-tca9534 = { version = "0.1", default-features = false }
+tca9534 = { version = "0.2", default-features = false }
 ```
 
 ```rust
@@ -283,6 +284,41 @@ You can use this driver on any platform by implementing the `SyncTransport` or `
 - `embedded-hal-async` - Enable embedded-hal async I2C trait integration
 - `async` - Enable async/await support (requires async transport)
 - `defmt` - Enable defmt logging support
+- `capi` - Enable C FFI support for C/C++ integration
+
+### C/C++ Integration (FFI)
+
+This driver provides a complete C-compatible interface for use in C/C++ projects:
+
+```c
+// Example C usage
+#include "tca9534.h"
+
+tca9534_handle_t device;
+tca9534_init(&device, TCA9534_ADDR_000, i2c_context, &i2c_ops);
+tca9534_set_pin_output(&device, 0, TCA9534_LEVEL_HIGH);
+```
+
+**Building with C FFI support:**
+
+1. Edit `Cargo.toml` and uncomment the `crate-type` line:
+   ```toml
+   [lib]
+   name = "tca9534"
+   crate-type = ["staticlib"] # use when build with capi feature
+   ```
+
+2. Build the static library:
+   ```bash
+   cargo build --release --features capi
+   ```
+
+3. Link the generated `libtca9534.a`(or `libtca9534.lib` in Windows) with your C project
+
+**Complete documentation and examples:**
+- [C FFI Guide](C_FFI_README.md) - Complete API documentation
+- [STM32 C Example](examples/stm32g4_c_ffi_demo/) - Real hardware integration
+- [Desktop C Example](examples/c_desktop_mock/) - Mock testing
 
 ## Examples
 

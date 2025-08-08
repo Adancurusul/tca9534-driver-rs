@@ -1,13 +1,23 @@
 [package]
 name = "tca9534-driver-rs"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["adancurusul <1016867898@example.com>"]
 description = "A platform-independent driver for the TCA9534 I2C IO expander"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/Adancurusul/tca9534-driver-rs"
-keywords = ["embedded", "i2c", "io-expander", "tca9534", "no-std"]
-categories = ["embedded", "hardware-support"]
+keywords = ["embedded", "i2c", "io-expander", "tca9534", "capi"]
+categories = ["embedded", "hardware-support", "capi"]
+
+[lib]
+name = "tca9534"
+# crate-type = ["staticlib"] # use when build with capi feature
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
 
 [dependencies]
 embedded-hal = { version = "^1.0", default-features = false, optional = true }
@@ -25,6 +35,9 @@ async = []
 full-async = ["async", "embedded-hal-async", "embedded-hal"]
 
 defmt = ["dep:defmt"]
+
+# C FFI support
+capi = []
 
 [workspace]
 members = [
